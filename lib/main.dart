@@ -4,9 +4,9 @@ import 'package:testas/Screens/statistics.dart';
 import 'package:testas/widgets/bottomnavigationbar.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import 'bank/image_adapter.dart';
+import '/data/bank/image_adapter.dart';
 import 'data/model/add_date.dart';
-import 'bank/add_bank.dart';
+import '/data/bank/add_bank.dart';
 
 void main() async {
 

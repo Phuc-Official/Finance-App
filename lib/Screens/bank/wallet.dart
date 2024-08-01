@@ -7,7 +7,7 @@ import 'package:testas/Screens/bank/add_bank.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 
-import '../../bank/add_bank.dart';
+import '../../data/bank/add_bank.dart';
 import '../../data/model/add_date.dart';
 import 'detail_bank.dart';
 

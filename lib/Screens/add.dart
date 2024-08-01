@@ -86,7 +86,7 @@ class _Add_ScreenState extends State<Add_Screen> {
     return GestureDetector(
       onTap: () {
         var add = Add_data(
-            selctedItemi!, amount_c.text, selctedItem!, expalin_C.text, date);
+            selctedItemi!, amount_c.text, date, expalin_C.text, selctedItem!);
         box.add(add);
         Navigator.of(context).pop();
       },

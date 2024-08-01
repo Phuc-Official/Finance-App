@@ -6,7 +6,7 @@ import 'package:testas/data/model/add_date.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../bank/add_bank.dart';
+import '../../data/bank/add_bank.dart';
 
 class Add_Bank_Screen extends StatefulWidget {
   const Add_Bank_Screen({super.key});

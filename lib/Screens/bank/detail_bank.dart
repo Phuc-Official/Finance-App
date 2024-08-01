@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../bank/add_bank.dart';
+import '../../data/bank/add_bank.dart';
 
 class BankAccountDetailsScreen extends StatelessWidget {
   final Add_bank history;
