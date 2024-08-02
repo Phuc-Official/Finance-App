@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:testas/data/model/add_date.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -125,13 +126,13 @@ class _Add_ScreenState extends State<Add_Screen> {
               initialDate: date,
               firstDate: DateTime(2020),
               lastDate: DateTime(2100));
-          if (newDate == Null) return;
+          if (newDate == null) return;
           setState(() {
-            date = newDate!;
+            date = newDate;
           });
         },
         child: Text(
-          'Ngày : ${date.day} / ${date.month} / ${date.year}',
+          'Ngày : ${date.day.toString().padLeft(2, '0')} / ${date.month.toString().padLeft(2, '0')} / ${date.year}',
           style: TextStyle(
             fontSize: 15,
             color: Colors.black,
@@ -219,12 +220,25 @@ class _Add_ScreenState extends State<Add_Screen> {
     );
   }
 
+  String _capitalizeFirstLetter(String value) {
+    if (value.isEmpty) return value;
+    return value[0].toUpperCase() + value.substring(1);
+  }
+
   Padding explain() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: TextField(
         focusNode: ex,
         controller: expalin_C,
+        inputFormatters: [
+          TextInputFormatter.withFunction((oldValue, newValue) {
+            return TextEditingValue(
+              text: _capitalizeFirstLetter(newValue.text),
+              selection: newValue.selection,
+            );
+          }),
+        ],
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           labelText: 'Mô tả',

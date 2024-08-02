@@ -52,11 +52,10 @@ class _StatisticsState extends State<Statistics> {
 
   void sortData() {
     setState(() {
-      // Sắp xếp dữ liệu theo thứ tự tăng/giảm dần dựa vào biến isAscending
       if (isAscending) {
-        a.sort((a, b) => a.amount.compareTo(b.amount));
+        a.sort((a, b) => num.parse(a.amount.toString()).compareTo(num.parse(b.amount.toString())));
       } else {
-        a.sort((a, b) => b.amount.compareTo(a.amount));
+        a.sort((a, b) => num.parse(b.amount.toString()).compareTo(num.parse(a.amount.toString())));
       }
     });
   }
@@ -133,22 +132,33 @@ class _StatisticsState extends State<Statistics> {
                       'Danh sách chi tiêu',
                       style: TextStyle(
                           color: Colors.black,
-                          fontSize: 16,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold),
                     ),
 // Thêm IconButton vào phần AppBar hoặc nơi khác phù hợp trong Scaffold
                     IconButton(
-                      icon: Icon(Icons.swap_vert),
+                      icon: const Row(
+                        children: [
+                          Text(
+                            'Giá ',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.blue,
+                            ),
+                          ),
+                          Icon(Icons.swap_vert, color: Colors.blue,),
+                          SizedBox(width: 4), // Khoảng cách giữa biểu tượng và text
+                        ],
+                      ),
                       iconSize: 25,
-                      color: Colors.grey,
                       onPressed: () {
                         setState(() {
-                          isAscending =
-                              !isAscending; // Đảo ngược thứ tự sắp xếp
+                          isAscending = !isAscending; // Đảo ngược thứ tự sắp xếp
                           sortData(); // Sắp xếp lại dữ liệu
                         });
                       },
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -181,9 +191,11 @@ class _StatisticsState extends State<Statistics> {
                         color: Colors.blue),
                   ),
                   Text(
-                    '${a[index].datetime.day}/${a[index].datetime.month}/${a[index].datetime.year}',
+                    '${a[index].datetime.day.toString().padLeft(2, '0')}/${a[index].datetime.month.toString().padLeft(2, '0')}/${a[index].datetime.year}',
                     style: TextStyle(
-                        fontWeight: FontWeight.w600, color: Colors.grey),
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey,
+                    ),
                   ),
                 ],
               ),

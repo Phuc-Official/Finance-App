@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testas/data/model/add_date.dart';
 import 'package:testas/data/utlity.dart';
 
@@ -19,6 +20,20 @@ class _HomeState extends State<Home> {
   final box = Hive.box<Add_data>('data');
   final List<String> day = ['Thứ 2', "Thứ 3", "Thứ 4", "Thứ 5", 'Thứ 6', 'Thứ 7', 'Chủ Nhật'];
 
+  List<Add_data> a = [];
+  int index_color = 0;
+  bool isAscending = true;
+
+  void sortData() {
+    setState(() {
+      if (isAscending) {
+        a.sort((a, b) => num.parse(a.amount.toString()).compareTo(num.parse(b.amount.toString())));
+      } else {
+        a.sort((a, b) => num.parse(b.amount.toString()).compareTo(num.parse(a.amount.toString())));
+      }
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +42,9 @@ class _HomeState extends State<Home> {
         child: ValueListenableBuilder(
           valueListenable: box.listenable(),
           builder: (context, value, child) {
+            final sortedTransactions = box.values.toList()
+              ..sort((a, b) => b.datetime.compareTo(a.datetime));
+
             return CustomScrollView(
               slivers: [
                 SliverToBoxAdapter(
@@ -57,13 +75,13 @@ class _HomeState extends State<Home> {
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                         (context, index) {
-                      final history = box.values.toList()[index];
+                      final history = sortedTransactions[index];
                       return Dismissible(
                         key: UniqueKey(),
                         background: Container(
                           color: Colors.red,
                           alignment: Alignment.centerRight,
-                          child: Padding(
+                          child: const Padding(
                             padding: EdgeInsets.only(right: 20),
                             child: Icon(Icons.delete, color: Colors.white),
                           ),
@@ -91,14 +109,13 @@ class _HomeState extends State<Home> {
                         },
                         onDismissed: (direction) {
                           setState(() {
-                            // Xóa dữ liệu tại chỉ số index khi được xác nhận
                             box.delete(history.key);
                           });
                         },
                         child: getList(history, index),
                       );
                     },
-                    childCount: box.length,
+                    childCount: sortedTransactions.length,
                   ),
                 )
               ],
@@ -140,7 +157,7 @@ class _HomeState extends State<Home> {
                 fontSize: 17, fontWeight: FontWeight.w600, color: Colors.blue),
           ),
           Text(
-            '${day[history.datetime.weekday - 1]}  ${history.datetime.day}/${history.datetime.month}/${history.datetime.year}',
+            '${day[history.datetime.weekday - 1]}  ${history.datetime.day.toString().padLeft(2, '0')}/${history.datetime.month.toString().padLeft(2, '0')}/${history.datetime.year}',
             style: TextStyle(fontWeight: FontWeight.w600, color: Colors.grey),
           ),
         ],
@@ -210,14 +227,6 @@ Widget _head() {
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
                           color: Color.fromARGB(255, 224, 223, 223),
-                        ),
-                      ),
-                      Text(
-                        'Phuc Le',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20,
-                          color: Colors.white,
                         ),
                       ),
                     ],
